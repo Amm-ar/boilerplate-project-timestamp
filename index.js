@@ -27,19 +27,17 @@ app.get("/api/hello", function (req, res) {
 
 
 
-app.get('/api/:year-:month-:day', (req, res) => {
-  let queryDate = new Date(
-    +req.params.year,
-    +req.params.month -1, // # Found a Difference in the date
-    +req.params.day +1 //    # In the day too
-  );
-  res.json({"unix": Date.parse(queryDate), "utc": queryDate.toUTCString()});
+// app.get('/api/:year-:month-:day', (req, res) => {
+app.get('/api/:date', (req, res) => {
+  let queryDate = new Date(req.params.date);
+  if (queryDate == "Invalid Date") res.json({ error : "Invalid Date" });
+  res.json({"unix": Number(Date.parse(queryDate))});
 });
 
 app.get('/api/:timeStamp', (req, res) => {
   let timeStamp = Number(req.params.timeStamp);
   let queryDate = new Date(timeStamp);
-  console.log(queryDate)
+  if (queryDate == "Invalid Date") res.json({ error : "Invalid Date" });
   res.json({"unix": timeStamp, "utc": queryDate.toUTCString()});
 });
 
