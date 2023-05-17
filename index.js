@@ -31,13 +31,12 @@ app.get("/api/hello", function (req, res) {
 app.get('/api/:date', (req, res) => {
   let queryDate = new Date(req.params.date);
   if (queryDate == "Invalid Date") res.json({ error : "Invalid Date" });
-  res.json({"unix": Number(Date.parse(queryDate))});
+  res.json({"unix": Number(Date.parse(queryDate)), "utc": queryDate.toUTCString()});
 });
 
 app.get('/api/:timeStamp', (req, res) => {
   let timeStamp = Number(req.params.timeStamp);
   let queryDate = new Date(timeStamp);
-  if (queryDate == "Invalid Date") res.json({ error : "Invalid Date" });
   res.json({"unix": timeStamp, "utc": queryDate.toUTCString()});
 });
 
