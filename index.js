@@ -8,6 +8,7 @@ var app = express();
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
 var cors = require('cors');
+const { query } = require('express');
 app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
@@ -26,7 +27,23 @@ app.get("/api/hello", function (req, res) {
 
 
 
+app.get('/api/:year-:month-:day', (req, res) => {
+  let queryDate = new Date(
+    +req.params.year,
+    +req.params.month -1, // # Found a Difference in the date
+    +req.params.day +1 //    # In the day too
+  );
+  res.json({"unix": Date.parse(queryDate), "utc": queryDate.toUTCString()});
+});
+
+app.get('/api/:timeStamp', (req, res) => {
+  let timeStamp = Number(req.params.timeStamp);
+  let queryDate = new Date(timeStamp);
+  console.log(queryDate)
+  res.json({"unix": timeStamp, "utc": queryDate.toUTCString()});
+});
+
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen( process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
